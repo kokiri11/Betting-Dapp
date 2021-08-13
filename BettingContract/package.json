@@ -1,0 +1,23 @@
+{
+  "name": "escrowlucasadrien",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chainlink/contracts": "^0.2.1",
+    "@openzeppelin/contracts": "^4.2.0",
+    "@truffle/hdwallet-provider": "^1.4.2",
+    "truffle-flattener": "^1.5.0"
+  },
+  "devDependencies": {
+    "truffle-plugin-verify": "^0.5.11"
+  }
+}
