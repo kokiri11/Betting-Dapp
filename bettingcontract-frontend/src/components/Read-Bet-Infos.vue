@@ -32,31 +32,14 @@
 
 <script>
 
-import Web3 from 'web3';
-import BettingContract from '../abis/BettingContract.json';
-
 export default {
-
-  data() {
-    return {
-      account: '0x0',
-      admin: '0x0',
-      currentBalance: 0,
-      bettingContractAbi: 0,
-      
-    };
-  },
-
-  async beforeMount(){
-     await this.importSmartContract();
-  },  
 
   methods:{
 
     getBetSubject: function() {
       if(document.getElementById("GetBetSubject").value != "" && document.getElementById("GetBetSubject").value >= 0) {
 
-        this.bettingContractAbi.methods.getBetReason(document.getElementById("GetBetSubject").value).call().then( result => alert("The bet is about: " + result));
+        this.$store.bettingContractAbi.methods.getBetReason(document.getElementById("GetBetSubject").value).call().then( result => alert("The bet is about: " + result));
         document.getElementById("GetBetSubject").value = ""; 
 
        } else {
@@ -67,7 +50,7 @@ export default {
     getBetAmount: function() {
       if(document.getElementById("GetBetAmount").value != "" && document.getElementById("GetBetAmount").value >= 0) {
 
-        this.bettingContractAbi.methods.getBetAmount(document.getElementById("GetBetAmount").value).call().then(result => alert("The amount is " + result / 10**18+ " ether(s)"));
+        this.$store.bettingContractAbi.methods.getBetAmount(document.getElementById("GetBetAmount").value).call().then(result => alert("The amount is " + result / 10**18+ " ether(s)"));
         document.getElementById("GetBetAmount").value = ""; 
 
        } else {
@@ -77,7 +60,7 @@ export default {
 
     getFirstBetter: function() {
       if(document.getElementById("GetFirstBetter").value != "" && document.getElementById("GetFirstBetter").value >= 0) {
-        this.bettingContractAbi.methods.getBetFirstBetter(document.getElementById("GetFirstBetter").value).call().then(result => alert("The first better address is: " + result));
+        this.$store.bettingContractAbi.methods.getBetFirstBetter(document.getElementById("GetFirstBetter").value).call().then(result => alert("The first better address is: " + result));
         document.getElementById("GetFirstBetter").value = ""; 
        } else {
         alert("Some informations are missing or you inputted wrong information");
@@ -86,7 +69,7 @@ export default {
 
     getSecondBetter: function() {
       if(document.getElementById("GetSecondBetter").value != "" && document.getElementById("GetSecondBetter").value >= 0) {
-        this.bettingContractAbi.methods.getBetSecondtBetter(document.getElementById("GetSecondBetter").value).call().then(result => alert("The second better address is: " + result))
+        this.$store.bettingContractAbi.methods.getBetSecondtBetter(document.getElementById("GetSecondBetter").value).call().then(result => alert("The second better address is: " + result))
         document.getElementById("GetSecondBetter").value = ""; 
        } else {
         alert("Some informations are missing or you inputted wrong information");
@@ -95,38 +78,11 @@ export default {
 
     getThirdParty: function() {
       if(document.getElementById("GetThirdParty").value != "" && document.getElementById("GetThirdParty").value >= 0) {
-        this.bettingContractAbi.methods.getBetThirdParty(document.getElementById("GetThirdParty").value).call().then(result => alert("The thirdparty address is: " + result))
+        this.$store.bettingContractAbi.methods.getBetThirdParty(document.getElementById("GetThirdParty").value).call().then(result => alert("The thirdparty address is: " + result))
         document.getElementById("GetThirdParty").value = ""; 
        } else {
         alert("Some informations are missing or you inputted wrong information");
       }
-    },
-
-
-    async importSmartContract(){
-
-      await window.ethereum.send('eth_requestAccounts');
-      
-      const web3 = new Web3(window.ethereum);
-
-      const accounts = await web3.eth.getAccounts();
-      this.account = accounts[0]
-      
-      const netId = window.ethereum.networkVersion;
-
-      console.log(netId)
-      
-      const bettingContractData = BettingContract.networks[netId];
-
-      console.log(bettingContractData)
-    
-      if(bettingContractData){
-        const finalBettingContract = new web3.eth.Contract(BettingContract.abi, bettingContractData.address);
-        this.bettingContractAbi = finalBettingContract;
-      }else{
-        window.alert('Betting smart contract has not been deployed to detected network');
-      }
-
     },
 
 

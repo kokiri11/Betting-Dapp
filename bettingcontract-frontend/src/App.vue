@@ -40,7 +40,6 @@ import ReadBetInfo from "./components/Read-Bet-Infos.vue"
 import ConnectMetamaskPage from "./components/Hello-Page.vue"
 
 
-
   
 
 export default {
@@ -56,7 +55,33 @@ export default {
     ConnectMetamaskPage,
   },
 
+  async beforeMount(){
+     await this.importSmartContract();
+  },  
+
+
+  mounted: function () {
+        this.$nextTick(function () {
+            window.setInterval(() => {
+                this.loadAccounts();
+            },100);
+        })
+    },
+
+
   methods: {
+
+    async loadAccounts(){
+
+     await this.$store.commit('loadAccounts');
+
+    },
+
+    async importSmartContract(){
+
+      await this.$store.commit("importSmartContract")
+      
+    },
 
     
 
