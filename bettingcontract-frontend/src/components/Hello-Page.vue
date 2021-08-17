@@ -3,6 +3,8 @@
 
   <button class="backGroundColor button connectMetamaskButton" v-on:click= "connectButtonMetamask" id='connectMetamaskButton'>Connect Metamask</button><br><br>
 
+  <!-- <h1> Current account connectected: {{this.$store.account}} </h1> -->
+
   <h1 class="titles"> Hello :) This is a betting Dapp on blockchain. You can bet with your friends and trusted ones (or with strangers but I strongly don't recommend it)
     The functionning is pretty simple. Lets say that 2 people wish to bet some cryptocurrencies on blockchain. They need a thirdparty to manage funds until the outcome of the bet is known. There's how it works:
   </h1><br>
@@ -15,11 +17,8 @@
 
  <h1 class="titles">Because this betting Dapp takes assets from blockchain, users will need a Metamask Wallet and a valid address! The "betters" and the "thirdparty" in reality correspond to wallet addresses! On the technical side, there are a few rules to follow to make the process easy. Here they are:</h1><br>
 
- <h1> 1 - Please load the Dapp connected to the metamask address you intend to make actions with. If ever you wish to change the metamask address you are going to use, please reload the Dapp after changing address on your metamask. This constraint is due to the fact that the address of the account you are going to use is retrieved at the load of the page and then kept until reload. If you change account, the Dapp will still consider that you are on your old address until you refresh the page. Also, be sure that ,when you attempt a transaction, your metamask is loaded with the address you used to load the page :)</h1>
- <h1> 2 - If you attempt to do something that does not comply with the functionning of the Dapp, Metamask won't pop up to confirm transaction OR Metamask will warn you that there will be a transaction error due to an exception in the execution of the contract. Please consider that an action has indeed taken place if you click the confirm button of the Metamask PopUp AND Metamask does not warn you of a failure in the execution of the contract.</h1>
- <h1> 3 - Please try to connect only one address at a time on the Dapp. This will avoid possible unexpected concurrencies when taking actions. </h1>
-
-
+ <h1> 1 - If you attempt to do something that does not comply with the functionning of the Dapp, Metamask won't pop up to confirm transaction OR Metamask will warn you that there will be a transaction error due to an exception in the execution of the contract. Please consider that an action has indeed taken place if you click the confirm button of the Metamask PopUp AND Metamask does not warn you of a failure in the execution of the contract.</h1>
+ <h1> 2 - Please try to connect only one address at a time on the Dapp. While it should work even if you connect multiple addresses, this may avoid possible unexpected concurrencies. </h1>
 
 
  </div>
@@ -33,10 +32,13 @@ export default {
 
   name: 'hello-metamask',
   
-
-  // async beforeMount(){
-  //   await this.importSmartContract();
-  // },
+  mounted: function () {
+        this.$nextTick(function () {
+            window.setInterval(() => {
+                this.loadAccounts();
+            },100);
+        })
+    },
   
   methods: {
     async loadWeb3(){
