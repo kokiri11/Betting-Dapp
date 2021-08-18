@@ -32,14 +32,6 @@ export default {
 
   name: 'hello-metamask',
   
-  mounted: function () {
-        this.$nextTick(function () {
-            window.setInterval(() => {
-                this.loadAccounts();
-            },100);
-        })
-    },
-  
   methods: {
     async loadWeb3(){
 

@@ -27,6 +27,11 @@
 
   <button v-on:click="getThirdParty" class="backGroundColor button">Get address </button><br><br>
 
+  <label for="GetBetIdAddress">Get the bets associated to the address:</label><br>
+  <input class="backGroundColor" type="text" id="GetBetIdAddress" name="GetBetIdAddress" placeholder="Address"><br><br>
+
+  <button v-on:click="getBetsAddress" class="backGroundColor button">Get Bet Ids </button><br><br>
+
     </div>
 </template>
 
@@ -85,7 +90,49 @@ export default {
       }
     },
 
+    getBetsAddress: async function() {
 
+      var yourAddress = document.getElementById("GetBetIdAddress").value;
+
+      console.log(yourAddress)
+
+      var BetIdAssociatedAddress = "The address has these bets associated to it:"
+
+      var lastId;
+      await this.$store.bettingContractAbi.methods.getLastBetId().call().then(function(result){lastId = result});
+
+      console.log(lastId)
+
+      var i = 0;
+
+      while(i < lastId) {
+
+        var firstAddress;
+        var secondAddress;
+        var thirdAddress;
+
+        await this.$store.bettingContractAbi.methods.getBetFirstBetter(i).call().then(function(result){firstAddress = (result == yourAddress)});
+
+        await this.$store.bettingContractAbi.methods.getBetSecondtBetter(i).call().then(function(result){secondAddress = (result == yourAddress)});
+
+        await this.$store.bettingContractAbi.methods.getBetThirdParty(i).call().then(function(result){thirdAddress = (result == yourAddress)});
+
+        console.log(firstAddress)
+        console.log(secondAddress)
+        console.log(thirdAddress)
+
+        if(firstAddress || secondAddress || thirdAddress){
+
+          BetIdAssociatedAddress = BetIdAssociatedAddress + " " + i + ",";
+
+        }
+
+        i++;
+      }
+
+      alert(BetIdAssociatedAddress);
+
+    }
   }
 
 }
