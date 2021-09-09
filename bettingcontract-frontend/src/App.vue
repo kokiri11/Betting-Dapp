@@ -2,7 +2,7 @@
   <div id="app">
     
     <Tabs>
-      <Tab name= "Connect to metamask" selected = "True">
+      <Tab name= "Presentation Page" selected = "True">
         <ConnectMetamaskPage/>
       </Tab>
 

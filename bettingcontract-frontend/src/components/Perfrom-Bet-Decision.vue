@@ -34,7 +34,7 @@ export default {
           var valueToGive;
           await this.$store.bettingContractAbi.methods.getBetAmount(document.getElementById("PerformDecisionBetIdBox").value).call().then(function(result) {valueToGive = new BN(result).mul(new BN(2))});
       
-          
+          console.log(document.getElementById("PerformDecisionWinnerAddressBox").value);
           this.$store.bettingContractAbi.methods.performBetDecision(document.getElementById("PerformDecisionBetIdBox").value, document.getElementById("PerformDecisionWinnerAddressBox").value).send({from: this.$store.account, value: valueToGive})
 
         } else { alert("It seems like you are trying to transfer funds to the winner of the bet with an account that is not registered as a the thirdparty in this bet. Please try changing to an address registered (if it is not already the case) AND THEN reload the page :)")}

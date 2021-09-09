@@ -3,7 +3,7 @@
 
   <button class="backGroundColor button connectMetamaskButton" v-on:click= "connectButtonMetamask" id='connectMetamaskButton'>Connect Metamask</button><br><br>
 
-  <!-- <h1> Current account connectected: {{this.$store.account}} </h1> -->
+  <h1 class="addressInfo"> Contract: {{this.$store.contractAddress}} </h1>
 
   <h1 class="titles"> Hello :) This is a betting Dapp on blockchain. You can bet with your friends and trusted ones (or with strangers but I strongly don't recommend it)
     The functionning is pretty simple. Lets say that 2 people wish to bet some cryptocurrencies on blockchain. They need a thirdparty to manage funds until the outcome of the bet is known. There's how it works:
@@ -76,6 +76,10 @@ export default {
 .connectMetamaskButton{
   height: 50px; 
   width: 175px; 
+}
+
+.addressInfo{
+  color: #60100B;
 }
 
 </style>

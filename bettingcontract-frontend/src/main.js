@@ -12,6 +12,7 @@ Vue.config.productionTip = false
 const store = new Vuex.Store({
   state: {
     account: '0x0',
+    contractAddress: "0x0",
     bettingContractAbi: 0,
   },
   mutations: {
@@ -46,6 +47,8 @@ const store = new Vuex.Store({
     
       if(bettingContractData){
         const finalBettingContract = new web3.eth.Contract(BettingContract.abi, bettingContractData.address);
+        console.log(bettingContractData.address);
+        this.contractAddress = bettingContractData.address;
         this.bettingContractAbi = finalBettingContract;
       }else{
         window.alert('Betting smart contract has not been deployed to detected network');

@@ -19,6 +19,6 @@
     "truffle-flattener": "^1.5.0"
   },
   "devDependencies": {
-    "truffle-plugin-verify": "^0.5.11"
+    "truffle-plugin-verify": "^0.5.14"
   }
 }

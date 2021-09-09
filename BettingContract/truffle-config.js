@@ -50,6 +50,17 @@ module.exports = {
      network_id: "*",       // Any network (default: none)
     },
 
+    rinkeby: {
+      provider: function() { 
+       return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL);
+      },
+      network_id: 4,
+      gas: 4500000,
+      gasPrice: 10000000000,
+  },
+
+  
+
 
     // Another network with more advanced options...
     // advanced: {
@@ -65,14 +76,13 @@ module.exports = {
 
 
 
-    // BscTestnet: {
-    // provider: () => new HDWalletProvider(mnemonic, "https://speedy-nodes-nyc.moralis.io/44b82fcd18f6c827d60ca148/bsc/testnet"),
-    // network_id: 97,       
-    // gas: 5500000,        
-    // confirmations: 10,    
-    // timeoutBlocks: 200,  
-    // skipDryRun: true     
-    // }
+    BscTestnet: {
+    provider: () => new HDWalletProvider(mnemonic, "https://speedy-nodes-nyc.moralis.io/44b82fcd18f6c827d60ca148/bsc/testnet"),
+    network_id: 97,       
+    gas: 5500000,
+    timeoutBlocks: 200,  
+    skipDryRun: true     
+    }
 
 
     
@@ -82,6 +92,11 @@ module.exports = {
     // network_id: 2111,   // This network is yours, in the cloud.
     // production: true    // Treats this network as if it was a public net. (default: false)
     // }
+  },
+
+  api_keys: {
+    etherscan: process.env.ETHERSCAN_API_KEY,
+    bscscan: process.env.BSCSCAN_API_KEY
   },
 
   // Set default mocha options here, use special reporters etc.
@@ -114,5 +129,9 @@ module.exports = {
 
   db: {
     enabled: false
-  }
+  },
+  
+    plugins: [
+      'truffle-plugin-verify'
+    ]
 };
