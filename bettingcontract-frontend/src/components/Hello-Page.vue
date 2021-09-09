@@ -3,7 +3,10 @@
 
   <button class="backGroundColor button connectMetamaskButton" v-on:click= "connectButtonMetamask" id='connectMetamaskButton'>Connect Metamask</button><br><br>
 
-  <h1 class="addressInfo"> Contract: {{this.$store.contractAddress}} </h1>
+  <h1 class="addressInfo"> Contract: {{this.contractAddress}} </h1>
+  <h1 class="addressInfo"> Account currently selected: {{this.accountSelected}} </h1>
+  <h1 class="addressInfo"> Current balance: {{this.accountBalance}} </h1>
+  <h1 class="addressInfo"> Ids of the bets this account is involved in: {{this.IdOfBetsInvolved}} </h1>
 
   <h1 class="titles"> Hello :) This is a betting Dapp on blockchain. You can bet with your friends and trusted ones (or with strangers but I strongly don't recommend it)
     The functionning is pretty simple. Lets say that 2 people wish to bet some cryptocurrencies on blockchain. They need a thirdparty to manage funds until the outcome of the bet is known. There's how it works:
@@ -27,12 +30,93 @@
 
 <script>
 import Web3 from "web3";
+import BettingContract from '../abis/BettingContract.json';
 
 export default {
 
+data: () => {
+        return {
+          contractAddress: "",
+          accountSelected: "",
+          accountBalance: "",
+          IdOfBetsInvolved: "",
+        }
+    },
+
+
   name: 'hello-metamask',
-  
+
+  mounted: function () {
+        this.$nextTick(function () {
+            window.setInterval(() => {
+                this.loadInformations();
+                this.getBetsAddress();
+            },100);
+        })
+    },
+
   methods: {
+
+    async loadInformations(){
+      
+      const netId = window.ethereum.networkVersion;
+      
+      const bettingContractData = BettingContract.networks[netId];
+
+      this.contractAddress = bettingContractData.address;
+
+      const web3 = new Web3(window.ethereum);
+
+      const accounts = await web3.eth.getAccounts();
+      this.accountSelected = accounts[0];
+
+      await web3.eth.getBalance(accounts[0]).then(result => this.accountBalance = (result * 10 ** -18) + " native token(s)");
+    },
+
+    async getBetsAddress(){
+
+      const web3 = new Web3(window.ethereum);
+
+      const accounts = await web3.eth.getAccounts();
+
+      var yourAddress = accounts[0];
+
+      var BetIdAssociatedAddress= "";
+
+      var lastId;
+      await this.$store.bettingContractAbi.methods.getLastBetId().call().then(function(result){lastId = result});
+
+      var i = 0;
+
+      while(i < lastId) {
+
+        var firstAddress;
+        var secondAddress;
+        var thirdAddress;
+
+        await this.$store.bettingContractAbi.methods.getBetFirstBetter(i).call().then(function(result){firstAddress = (result == yourAddress)});
+
+        await this.$store.bettingContractAbi.methods.getBetSecondtBetter(i).call().then(function(result){secondAddress = (result == yourAddress)});
+
+        await this.$store.bettingContractAbi.methods.getBetThirdParty(i).call().then(function(result){thirdAddress = (result == yourAddress)});
+
+        console.log(firstAddress)
+        console.log(secondAddress)
+        console.log(thirdAddress)
+
+        if(firstAddress || secondAddress || thirdAddress){
+
+          BetIdAssociatedAddress = BetIdAssociatedAddress + " " + i + ",";
+
+        }
+
+        i++;
+      }
+
+      this.IdOfBetsInvolved = BetIdAssociatedAddress;
+
+    },
+
     async loadWeb3(){
 
       // Setup Web3 si Metask est présent

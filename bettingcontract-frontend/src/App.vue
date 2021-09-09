@@ -57,6 +57,8 @@ export default {
 
   async beforeMount(){
      await this.importSmartContract();
+     await this.loadWeb3();
+     
   },  
 
 
@@ -80,6 +82,12 @@ export default {
     async importSmartContract(){
 
       await this.$store.commit("importSmartContract")
+      
+    },
+
+    async loadWeb3(){
+
+      await this.$store.commit("loadWeb3")
       
     },
 

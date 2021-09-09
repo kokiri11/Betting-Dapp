@@ -55,7 +55,7 @@ export default {
     getBetAmount: function() {
       if(document.getElementById("GetBetAmount").value != "" && document.getElementById("GetBetAmount").value >= 0) {
 
-        this.$store.bettingContractAbi.methods.getBetAmount(document.getElementById("GetBetAmount").value).call().then(result => alert("The amount is " + result / 10**18+ " ether(s)"));
+        this.$store.bettingContractAbi.methods.getBetAmount(document.getElementById("GetBetAmount").value).call().then(result => alert("The amount is " + result / 10**18+ " native token(s)"));
         document.getElementById("GetBetAmount").value = ""; 
 
        } else {

@@ -12,7 +12,6 @@ Vue.config.productionTip = false
 const store = new Vuex.Store({
   state: {
     account: '0x0',
-    contractAddress: "0x0",
     bettingContractAbi: 0,
   },
   mutations: {
@@ -23,8 +22,6 @@ const store = new Vuex.Store({
 
       const accounts = await web3.eth.getAccounts();
       this.account = accounts[0]
-
-      console.log(this.account)
 
     },
 
@@ -38,16 +35,11 @@ const store = new Vuex.Store({
       this.account = accounts[0]
       
       const netId = window.ethereum.networkVersion;
-
-      console.log(netId)
       
       const bettingContractData = BettingContract.networks[netId];
-
-      console.log(bettingContractData)
     
       if(bettingContractData){
         const finalBettingContract = new web3.eth.Contract(BettingContract.abi, bettingContractData.address);
-        console.log(bettingContractData.address);
         this.contractAddress = bettingContractData.address;
         this.bettingContractAbi = finalBettingContract;
       }else{
@@ -55,6 +47,21 @@ const store = new Vuex.Store({
       }
       
     },
+
+    async loadWeb3(){
+
+      // Setup Web3 si Metask est présent
+      if(window.ethereum){
+        window.web3 = new Web3(window.ethereum)
+        await window.ethereum.enable()        
+        // Pas sûr de ce que ça fait j'avoue
+      } else if(window.web3){
+        window.web3 = new Web3(window.web3.currentProvider)          
+      } else {
+        // S'affiche s'il n'y a pas de Metamask
+        window.alert('Non-Ethereum browser detected. Please download Metamask')        
+      }
+    }
     
   }
 })
