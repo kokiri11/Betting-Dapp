@@ -86,7 +86,7 @@ li{
 
     &:is-active  {
         color: #8800FF;
-    }
+    } 
 }
 
 
